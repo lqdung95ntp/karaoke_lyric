@@ -126,10 +126,11 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/backend
+            - project/karaoke_lyric
       # - destroy-environment 
 
   # Copy source code from root folder to ansible & build docker in EC2
+  
   deploy-backend:
     docker:
       - image: cimg/base:stable
@@ -137,7 +138,10 @@ jobs:
       - checkout
       - install_awscli
       - install_ansible
-      - install_nodejs
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt install -y tar gzip curl
       - add_ssh_keys:
           fingerprints: ["c0:61:13:7f:d8:f6:78:3d:90:29:40:a1:79:ac:84:7e"]
       - attach_workspace:
@@ -145,25 +149,16 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run:
-          name: Install dependencies
-          command: |
-            cd backend
-            npm install
-      - run:
           name: Deploy backend
           command: |
-            cd backend
-            npm run build
-            cd ..
-            tar -C backend -czvf artifact.tar.gz .
+            tar -zcvf artifact.tar.gz karaoke_lyric Dockerfile run_docker.sh upload_docker.sh run_kubernete.sh requirements.txt
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
 
             cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is -------"
+            echo "Contents of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy-environment
-      - revert-migrations
+      # - destroy-environment
 
   smoke-test:
     docker:
@@ -207,3 +202,5 @@ workflows:
           requires: [test-backend, test-docker]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
+      - deploy-backend:
+          requires: [configure-infrastructure]

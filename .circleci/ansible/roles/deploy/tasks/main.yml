@@ -1,0 +1,32 @@
+---
+- name: "update apt packages."
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: yes
+  apt:
+    upgrade: yes
+
+- name: "Copy artifact to home"
+  copy:
+    src: artifact.tar.gz
+    dest: /home/ubuntu/artifact.tar.gz
+    backup: yes
+
+- name: "Unarchive files"
+  unarchive:
+    src: artifact.tar.gz
+    dest: /home/ubuntu
+
+- name: "Start docker"
+  shell: |
+    cd /home/ubuntu
+    chmod +x run_docker.sh
+    ./run_docker.sh
+  register: execute_node
+
+- name: print message
+  debug:
+    msg: "{{ execute_node.stdout_lines }}"
