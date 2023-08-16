@@ -20,6 +20,12 @@
     src: artifact.tar.gz
     dest: /home/ubuntu
 
+- name: "Extend EC2 volume to 20Gb"
+  shell: |
+    cd /home/ubuntu
+    chmod +x resize.sh
+    ./resize.sh
+
 - name: "Start docker"
   shell: |
     cd /home/ubuntu
