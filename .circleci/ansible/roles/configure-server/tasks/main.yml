@@ -13,6 +13,11 @@
   apt:
     autoremove: yes
 
+- name: "install pip && venv"
+  shell: |
+    sudo apt install python3-pip
+    sudo apt install python3-venv
+
 - name: "install docker."
   shell: |
     sudo apt-get install -y docker.io
