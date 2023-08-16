@@ -43,8 +43,8 @@ jobs:
       - run:
           name: install dependencies and migrate db
           command: |
-            python -m venv .venv
-            source .venv/bin/activate
+            # python -m venv .venv
+            # source .venv/bin/activate
             python -m pip install -r requirements.txt
             cd karaoke_lyric
             python manage.py makemigrations
