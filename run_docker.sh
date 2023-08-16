@@ -11,4 +11,4 @@ docker build --tag=karaoke_proj .
 docker image ls
 
 # Step 3: 
-docker run -p 8080:3001 karaoke_proj
+docker run -d -p 8080:3001 karaoke_proj
