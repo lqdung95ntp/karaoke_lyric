@@ -116,7 +116,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - add_ssh_keys:
-          fingerprints: ["d2:36:95:15:98:1a:4b:c7:43:ab:fe:74:84:35:33:f2"]
+          fingerprints: ["c0:61:13:7f:d8:f6:78:3d:90:29:40:a1:79:ac:84:7e"]
       - run:
           name: Configure server
           command: |            
@@ -127,7 +127,7 @@ jobs:
           root: ~/
           paths:
             - project/backend
-      - destroy-environment 
+      # - destroy-environment 
 
   # Copy source code from root folder to ansible & build docker in EC2
   deploy-backend:
@@ -139,7 +139,7 @@ jobs:
       - install_ansible
       - install_nodejs
       - add_ssh_keys:
-          fingerprints: ["54:60:ad:c3:a4:f9:e9:99:5b:3a:db:e1:a7:a8:88:aa"]
+          fingerprints: ["c0:61:13:7f:d8:f6:78:3d:90:29:40:a1:79:ac:84:7e"]
       - attach_workspace:
           at: ~/
       - restore_cache:
