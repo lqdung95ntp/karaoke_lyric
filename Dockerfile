@@ -7,17 +7,17 @@ WORKDIR /app
 
 COPY requirements.txt karaoke_lyric/ /app/
 
-# hadolint ignore=DL3013
 # install dependencies
-RUN python -m pip install --upgrade pip && \
-    python -m pip install -r requirements.txt
+RUN python3 -m pip install --upgrade pip &&\
+    python3 -m pip install --trusted-host pypi.python.org -r requirements.txt
+# hadolint ignore=DL3013
 
 # make migration
-RUN python manage.py makemigrations && \
-    python manage.py migrate
+RUN python3 manage.py makemigrations && \
+    python3 manage.py migrate
 
 # expose port 3001
 EXPOSE 3001
 
 # run django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:3001"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:3001"]

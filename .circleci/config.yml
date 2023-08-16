@@ -20,6 +20,14 @@ commands:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+  install_hadolint:
+    description: Install Hadolint
+    steps:
+      - run:
+          name: Install Hadolint
+          command: |
+            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.10.0/hadolint-Linux-x86_64
+            chmod +x /bin/hadolint
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -35,7 +43,7 @@ commands:
             aws cloudformation delete-stack --stack-name "karaoke-backend-<< parameters.workflow_id >>"
             
 jobs:
-  build-backend:
+  test-backend:
     docker:
       - image: cimg/python:3.9.11
     steps:
@@ -49,22 +57,21 @@ jobs:
             cd karaoke_lyric
             python manage.py makemigrations
             python manage.py migrate
+            python manage.py test --verbosity=2
       - save_cache:
           paths: [~/project/karaoke_lyric]
           key: backend-build
                 
-  test-backend:
+  test-docker:
     docker:
       - image: cimg/python:3.9.11
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
+      - install_hadolint
       - run:
           name: Test backend
           command: |
-            cd karaoke_lyric
-            python manage.py test --verbosity=2
+            hadolint Dockerfile
             
   deploy-infrastructure:
     docker:
@@ -191,7 +198,5 @@ jobs:
 workflows:
   Karaoke_Lyric:
     jobs:
-      - build-backend
-      - test-backend:
-          requires:
-            - build-backend
+      - test-backend
+      - test-docker
