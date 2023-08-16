@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block wrapper %}
+<style>
+    .warning-text {
+        background-color: yellow;
+        width: 100%;
+        padding: 10px;
+    }
+</style>
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="shadow p-4 border-0 rounded-4" style="width: 400px">
+        <form method="post" action="">
+            {% csrf_token %}                    
+            <h4 class="d-flex justify-content-center mb-4">Please register new account</h4>
+            {% if message is not None %}<div class="warning-text mb-4 ">{{ message }}</div>{% endif %}
+            <!-- Name input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="reg_name_txt" name="reg_name_txt" class="form-control" />
+                <label class="form-label" for="reg_name_txt">Name</label>
+            </div>
+    
+            <!-- Username input -->
+            <div class="form-outline mb-4">
+                <input type="text" id="reg_username_txt" name="reg_username_txt" class="form-control" />
+                <label class="form-label" for="reg_username_txt">Username</label>
+            </div>
+    
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+                <input type="email" id="reg_email_txt" name="reg_email_txt" class="form-control" />
+                <label class="form-label" for="reg_email_txt">Email</label>
+            </div>
+    
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+                <input type="password" id="reg_pass_txt" name="reg_pass_txt" class="form-control" />
+                <label class="form-label" for="reg_pass_txt">Password</label>
+            </div>
+    
+            <!-- Repeat Password input -->
+            <div class="form-outline mb-4">
+                <input type="password" id="reg_pass2_txt" name="reg_pass2_txt" class="form-control" />
+                <label class="form-label" for="reg_pass2_txt">Repeat password</label>
+            </div>
+    
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block wrapper %}
+<!-- create modal -->
+<!-- Modal -->
+<div class="modal fade" 
+    id="songModal" 
+    tabindex="-1" 
+    aria-labelledby="songModalLabel" 
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="songModalLabel">Add song and lyric</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> 
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input type="text" id="song_txt" name="song_txt" class="form-control" />
+                        <label class="form-label" for="song_txt">Song</label>
+                    </div>
+                    <div class="form-outline">
+                        <textarea class="form-control" id="lyric_txt" name="lyric_txt" rows="10"></textarea>
+                        <label class="form-label" for="lyric_txt">Lyric</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="w-100 d-flex justify-content-center">
+    
+    <div class="mt-4" style="text-align: center">
+        <h1>Save your favorite song, {{ request.user.username }}!</h1>
+        <p class="mb-2">You can add your favorite songs and search again whenever singing karaoke</p>
+        <button 
+            type="button" 
+            class="btn btn-primary mb-4" 
+            data-mdb-toggle="modal" 
+            data-mdb-target="#songModal">
+            <i class="fa-solid fa-plus me-2"></i>Add new song
+        </button>          
+        
+        <div>
+            <style>
+                .mask-song:hover{
+                    opacity: 0.2;
+                    background-color: red;
+                    border-radius: 10px;
+                }
+            </style>
+            <ul class="list-group list-group-light">
+                {% for song in all_songs %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-music rounded-circle" style="width: 45px; height: 45px;"></i>
+                        <div class="ms-3">
+                            <p class="fw-bold mb-1">{{ song.song }}</p>
+                            <p class="text-muted mb-0">{{ song.time_update }}</p>
+                        </div>
+                    </div>
+                    <span class="badge rounded-pill badge-success me-2">Active</span>
+                    <a class="mask mask-song" href="{% url 'search' song_slug=song.song_slug %}"></a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
