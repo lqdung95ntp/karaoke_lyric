@@ -151,14 +151,16 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            tar -zcvf artifact.tar.gz karaoke_lyric Dockerfile run_docker.sh upload_docker.sh run_kubernete.sh requirements.txt
+            ls
+            tar -czvf artifact.tar.gz *
+            ls
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
-
+            ls .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-      # - destroy-environment
+      - destroy-environment
 
   smoke-test:
     docker:
