@@ -15,8 +15,8 @@
 
 - name: "install pip && venv"
   shell: |
-    sudo apt install python3-pip
-    sudo apt install python3-venv
+    sudo apt install -y python3-pip
+    sudo apt install -y python3-venv
 
 - name: "install docker."
   shell: |
@@ -29,3 +29,8 @@
 - name: "test docker"
   shell: |
     sudo docker run hello-world
+  register: execute_node
+
+- name: print message
+  debug:
+    msg: "{{ execute_node.stdout_lines }}"
