@@ -25,7 +25,7 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t3.micro # need 2CPU to run minikube
+      InstanceType: t3.small # need 2CPU & 2Gb RAM to run minikube
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: ec2_key # If you use another key pair name, you should change this value to match.

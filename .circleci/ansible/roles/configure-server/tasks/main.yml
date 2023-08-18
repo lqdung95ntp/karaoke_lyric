@@ -24,13 +24,27 @@
 
 - name: "start docker"
   shell: |
+    # sudo groupadd docker
+    # sudo usermod -aG docker $USER
+    # newgrp docker
     sudo service docker start
 
 - name: "test docker"
   shell: |
-    sudo docker run hello-world
+    docker run hello-world
   register: execute_node
 
 - name: print message
   debug:
     msg: "{{ execute_node.stdout_lines }}"
+
+- name: "install kubectl"
+  shell: |
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+- name: "install minikube"
+  shell: |
+    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+    && chmod +x minikube
+    sudo install minikube /usr/local/bin/
