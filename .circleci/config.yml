@@ -71,7 +71,8 @@ jobs:
       - run:
           name: Test backend
           command: |
-            hadolint --ignore DL3013 --ignore DL3042 Dockerfile
+            make install
+            make lint
   
   # Create EC2 using Cloudformation
   deploy-infrastructure:
